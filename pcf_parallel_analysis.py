@@ -17,28 +17,28 @@ def handle_mol(mol_ind,stride_len,n_strides,pcf_c,n_bins,n_bead_types,cg_sites,b
 	within the same simulation frame and sorts into the pcf 
 	histogram vector "pcf_c".
 
-    Input
-    ----------
-    mol_ind : :obj:`int`
-    	Index of the first molecule to calculate 
-    	distances to all not previously visited 
-    	other molecules.
-    stride_len : :obj:`int`
-        Increment of mol_ind after a single sweep.
-    n_strides : :obj:`int`
-        Number of sweeps. 
-    pcf_c : (n_bins,) multiprocessing.Array of :obj:`ctypes.c_double`
-        Aray to hold the pcf histogram.
- 	n_bins : :obj:`int`
- 		Number of pcf histogram bins.
-    n_bead_types : :obj:`int`
-    	Number of bead types of the goarse-grained molecule.
-    cg_sites: :obj:`MDAnalysis.core.groups.AtomGroup`
-    	Container of positions of all molecules.
-    box_length : :obj:`float`
-    	Simulation box length.
-    n_molec : :obj:`int`
-    	Number of molecules in the trajectory file.
+	Input
+	----------
+	mol_ind : :obj:`int`
+		Index of the first molecule to calculate 
+		distances to all not previously visited 
+		other molecules.
+	stride_len : :obj:`int`
+		Increment of mol_ind after a single sweep.
+	n_strides : :obj:`int`
+		Number of sweeps. 
+	pcf_c : (n_bins,) multiprocessing.Array of :obj:`ctypes.c_double`
+		Aray to hold the pcf histogram.
+	n_bins : :obj:`int`
+		Number of pcf histogram bins.
+	n_bead_types : :obj:`int`
+		Number of bead types of the goarse-grained molecule.
+	cg_sites: :obj:`MDAnalysis.core.groups.AtomGroup`
+		Container of positions of all molecules.
+	box_length : :obj:`float`
+		Simulation box length.
+	n_molec : :obj:`int`
+		Number of molecules in the trajectory file.
 	n_frames_reduces : :obj:`int`
 		Number of frames of the trajectory to be used
 		to calculate the pcf.
@@ -46,14 +46,14 @@ def handle_mol(mol_ind,stride_len,n_strides,pcf_c,n_bins,n_bead_types,cg_sites,b
 		Dimension.
 	d_r : :obj:`floar`
 		Bin-width of the pcf histogram.
-	
+
 
 	Output
-    ----------
+	----------
 	None
 
 
-    """
+"""
 
 
 	pcf = np.frombuffer(pcf_c.get_obj()).reshape(n_bins+1)
