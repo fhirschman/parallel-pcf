@@ -53,7 +53,7 @@ def handle_mol(mol_ind,stride_len,n_strides,pcf_c,n_bins,n_bead_types,cg_sites,b
 	None
 
 
-"""
+	"""
 
 
 	pcf = np.frombuffer(pcf_c.get_obj()).reshape(n_bins+1)
