@@ -10,7 +10,7 @@ THE SOFTWARE.
 
 import numpy as np
 
-def handle_mol(mol_ind,stride_len,n_strides,pcf_c,n_bins,n_bead_types,cg_sites,box_length,n_molec,n_frames_reduced,dim,d_r):
+def handle_mol(mol_ind,stride_len,n_strides,pcf_c,n_bins,n_bead_types,cg_sites,box_length,n_molec,n_frames_reduced,dim,d_r,lock):
 
 	"""
 	Calculates differences of centers-of-geometry between molecules
@@ -46,7 +46,9 @@ def handle_mol(mol_ind,stride_len,n_strides,pcf_c,n_bins,n_bead_types,cg_sites,b
 		Dimension.
 	d_r : :obj:`floar`
 		Bin-width of the pcf histogram.
-
+	lock : :obj:`multiprocessing.Lock()
+		Lock object to prevent loss of sumands through simultanteous trials to write into
+		shared memory`
 
 	Output
 	----------
@@ -130,6 +132,9 @@ def handle_mol(mol_ind,stride_len,n_strides,pcf_c,n_bins,n_bead_types,cg_sites,b
 			bin_ind = int( dist_cog / d_r  + 0.5 )
 			
 			# Increment corresponding bin
+			lock.acquire()
 			pcf[bin_ind] += (2.0/(n_frames_reduced))*(box_length**3/(n_molec))*(1.0/(n_molec*4.0*np.pi/3.0))
+			lock.release()
+			
 
 	return

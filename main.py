@@ -31,6 +31,7 @@ with (N_MOLEC*(N_MOLEC-1))/2 terms for each frame to all available CPU threads.
 import MDAnalysis as mda
 import numpy as np
 import multiprocessing as mp
+from multiprocessing import Lock
 import ctypes as c
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -71,7 +72,8 @@ print("Using " + str(N_PROC) + " threads.\n")
 N_STRIDES=N_MOLEC//N_PROC
 # Number of molecules for each remaining process
 N_MOLEC_REMAIN=N_MOLEC%N_PROC
-
+# Important to use lock in order not to lose summmands
+lock = Lock() 
 
 u = mda.Universe(T_PATH)
 for ts in u.trajectory:
@@ -84,7 +86,7 @@ for ts in u.trajectory:
 	processes=[]
 	for proc_ind in range(N_PROC):
 		if(len(processes)< N_PROC):
-			current_proc = mp.Process(target=handle_mol,args=(proc_ind,N_PROC,N_STRIDES,pcf_c,N_BINS,N_BEAD_TYPES,CG_SITES,BOX_LENGTH,N_MOLEC,N_FRAMES_REDUCED,DIM,D_R))
+			current_proc = mp.Process(target=handle_mol,args=(proc_ind,N_PROC,N_STRIDES,pcf_c,N_BINS,N_BEAD_TYPES,CG_SITES,BOX_LENGTH,N_MOLEC,N_FRAMES_REDUCED,DIM,D_R,lock))
 			current_proc.start()
 			processes.append(current_proc)
 		else:
@@ -102,7 +104,7 @@ for ts in u.trajectory:
 			if(not(processes[proc_ind].is_alive())):
 				processes.pop(proc_ind) 
 				if(n_procs_remain != N_MOLEC_REMAIN):
-					current_proc = mp.Process(target=handle_mol,args=(N_MOLEC-(N_MOLEC_REMAIN-n_procs_remain),0,1,pcf_c,N_BINS,N_BEAD_TYPES,CG_SITES,BOX_LENGTH,N_MOLEC,N_FRAMES_REDUCED,DIM,D_R))
+					current_proc = mp.Process(target=handle_mol,args=(N_MOLEC-(N_MOLEC_REMAIN-n_procs_remain),0,1,pcf_c,N_BINS,N_BEAD_TYPES,CG_SITES,BOX_LENGTH,N_MOLEC,N_FRAMES_REDUCED,DIM,D_R,lock))
 					current_proc.start()
 					processes.append(current_proc)
 					n_procs_remain += 1 
