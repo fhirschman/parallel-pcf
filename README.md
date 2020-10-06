@@ -1,5 +1,5 @@
 # parallel-pcf
-Python script for parallel calculation of pair correlation functions of simulation trajectories
+A Python script for parallel calculation of pair correlation functions of simulation trajectories
 
 
 ### Prerequisites
@@ -22,7 +22,7 @@ is provided in 'traj.gsd'. By running
 $ python main.py
 ```
 the script will automatically use all available CPU threads
-to calculate the pair-correlation function of centers-of-mass
+to calculate the pair-correlation function of centers-of-geometry
 of all molecules, more precisely:
 
 <img src="https://render.githubusercontent.com/render/math?math=g(r)%20%3D%20%20%5Cfrac%7B1%7D%7B%5Crho%20N%7D%20%5Cleft%5Clangle%20%5Csum_%7Bm%3D1%7D%5E%7BN%7D%20%20%5Csum_%7Bn%5Cneq%20m%7D%5E%7BN%7D%20%5Cdelta%20%5Cleft%5B%20%5Cboldsymbol%7Br%7D%20-%20%5Cleft(%20%5Cboldsymbol%7Br%7D_m%20-%20%5Cboldsymbol%7Br%7D_n%20%5Cright)%20%5Cright%5D%20%5Cright%5Crangle">
